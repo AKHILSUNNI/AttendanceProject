@@ -3,6 +3,7 @@ import numpy as np
 import face_recognition
 import os
 from datetime import datetime,date
+from playsound import playsound
 with open('Attendance.csv','r+') as f:
  f.truncate()
  f.writelines('Name,Date,Time')
@@ -25,7 +26,7 @@ def findEncodings(images):
   encodeList.append(encode)
  return encodeList
  
-def markAttendance(name):
+def markAttendance(name,img):
  with open('Attendance.csv','r+') as f:
   myDataList = f.readlines()
   nameList = []
@@ -37,6 +38,20 @@ def markAttendance(name):
    dtString = now.strftime('%H:%M:%S')
    today=date.today()
    f.writelines(f'\n{name},{today},{dtString}')
+   if name=='AKHIL':
+    cv2.imwrite('detectedimages/akhil.jpg',img)
+    playsound('Akhil.mp3')
+   elif name=='NEEVEA':
+    cv2.imwrite('detectedimages/neevea.jpg',img)
+    playsound('Neevea.mp3')
+   elif name=='ELON MUSK':
+    cv2.imwrite('detectedimages/elon musk.jpg',img)
+    playsound('Elon musk.mp3')
+   elif name=='JACK MA':
+    cv2.imwrite('detectedimages/jack ma.jpg',img)
+    playsound('Jack ma.mp3')
+   elif name=='BILL GATES':
+    cv2.imwrite('detectedimages/bill gates.jpg',img)
  
 encodeListKnown = findEncodings(images)
 print('Encoding Complete')
@@ -64,7 +79,7 @@ while True:
     cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
     cv2.rectangle(img,(x1,y2-35),(x2,y2),(0,255,0),cv2.FILLED)
     cv2.putText(img,name,(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
-    markAttendance(name)
+    markAttendance(name,img)
    
  cv2.imshow('Webcam',img)
  key=cv2.waitKey(1)
@@ -72,3 +87,4 @@ while True:
    cap.release()
    cv2.destroyAllWindows()
    break
+      
